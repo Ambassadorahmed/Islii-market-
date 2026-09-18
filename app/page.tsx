@@ -1,14 +1,9 @@
-ef } from "react"
-import { Copy, Download, Check, FileCode2, Rocket, AlertTriangle, Smartphone, Bell, Store, ShieldCheck, Star } from "lucide-react"
-
-const ORANGE = "#F68B1E"
-
-const pageTsxContent = `'use client'
+'use client'
 import { useState, useEffect } from "react"
 import {
   Menu, X, Search, Bell, Home, Heart, PlusCircle, MessageCircle, User,
   Star, MapPin, ShieldCheck, Eye, CheckCircle, Clock, Store, Package,
-  Video, ImageIcon, DollarSign, Phone, Mail, Trash2, Edit3, AlertCircle
+  Video, ImageIcon, Phone, Mail, AlertCircle
 } from "lucide-react"
 
 // ========== TYPES ==========
@@ -69,7 +64,7 @@ const INITIAL_ADS: AdBanner[] = [
 const INITIAL_PRODUCTS: Product[] = [
   { id: "1", title: "iPhone 14 Pro Max 256GB", price: 145000, image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600&h=600&fit=crop", category: "Electronics", location: "Eastleigh, Nairobi", seller: "Ahmed Store", sellerPhone: "0725722020", sellerEmail: "ahmed@islii.com", rating: 4.8, ratingsCount: 42, status: "approved", isPromotion: true, createdAt: "2025-05-10" },
   { id: "2", title: "Toyota Corolla 2018 - Clean", price: 1850000, image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=600&h=600&fit=crop", category: "Vehicles", location: "Islii, Nairobi", seller: "AutoHub", sellerPhone: "0712345678", sellerEmail: "auto@hub.com", rating: 4.6, ratingsCount: 18, status: "approved", createdAt: "2025-05-09" },
-  { id: "3", title: "Samsung 55\\" QLED 4K Smart TV", price: 65000, image: "https://images.unsplash.com/photo-1593359677879-a4bb92f367d8?w=600&h=600&fit=crop", category: "Electronics", location: "Luthuli, Nairobi", seller: "ElectroMart", sellerPhone: "0722123456", sellerEmail: "electro@mart.com", rating: 4.9, ratingsCount: 31, status: "approved", createdAt: "2025-05-08" },
+  { id: "3", title: 'Samsung 55" QLED 4K Smart TV', price: 65000, image: "https://images.unsplash.com/photo-1593359677879-a4bb92f367d8?w=600&h=600&fit=crop", category: "Electronics", location: "Luthuli, Nairobi", seller: "ElectroMart", sellerPhone: "0722123456", sellerEmail: "electro@mart.com", rating: 4.9, ratingsCount: 31, status: "approved", createdAt: "2025-05-08" },
   { id: "4", title: "Men's Official Suit - Navy", price: 8500, image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=600&fit=crop", category: "Fashion", location: "Eastleigh", seller: "Fashion Hub", sellerPhone: "0700123456", sellerEmail: "fashion@hub.com", rating: 4.5, ratingsCount: 12, status: "approved", isPromotion: true, createdAt: "2025-05-07" },
   { id: "5", title: "2BR Apartment To Let - Islii", price: 35000, image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=600&fit=crop", category: "Property", location: "Islii Airbase", seller: "Property Masters", sellerPhone: "0722000111", sellerEmail: "prop@master.com", rating: 4.7, ratingsCount: 9, status: "pending", createdAt: "2025-05-11" },
   { id: "6", title: "JBL PartyBox Speaker", price: 28000, image: "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600&h=600&fit=crop", category: "Electronics", location: "Eastleigh", seller: "Ahmed Store", sellerPhone: "0725722020", sellerEmail: "ahmed@islii.com", rating: 5, ratingsCount: 56, status: "approved", createdAt: "2025-05-06" },
@@ -97,7 +92,7 @@ export default function IsliiMarketPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [currentAd, setCurrentAd] = useState(0)
-  const [userRole] = useState<UserRole>("admin") // change to buyer/seller to test permissions
+  const [userRole] = useState<UserRole>("admin") // Change to "buyer" or "seller" to test user roles
   const [isSeller, setIsSeller] = useState(false)
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null)
   const [newProduct, setNewProduct] = useState({ title: "", price: "", category: "Electronics", location: "", image: "", video: "" })
@@ -113,7 +108,7 @@ export default function IsliiMarketPage() {
     return () => clearInterval(t)
   }, [ads.length])
 
-  // Simulate notifications
+  // Helper function for notifications
   const addNotification = (type: "join" | "product", msg: string) => {
     setNotifications(prev => [{ id: Date.now().toString(), type, message: msg, time: "now", read: false }, ...prev])
   }
@@ -291,7 +286,7 @@ export default function IsliiMarketPage() {
 
         {activeTab === "home" && (
           <>
-            {/* AD BANNERS - IMAGE + VIDEO */}
+            {/* AD BANNERS */}
             <div className="relative overflow-hidden rounded-[24px] bg-zinc-900 h-[200px] md:h-[320px]">
               {ads.map((ad, i) => (
                 <div key={ad.id} className={`absolute inset-0 transition-all duration-700 ${i === currentAd ? "opacity-100 scale-100" : "opacity-0 scale-105 pointer-events-none"}`}>
@@ -537,7 +532,7 @@ export default function IsliiMarketPage() {
         </div>
       )}
 
-      {/* BOTTOM NAV - Home Saved Sell Messages Profile */}
+      {/* BOTTOM NAV */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-[0_-8px_30px_rgba(0,0,0,0.08)] z-40">
         <div className="max-w-7xl mx-auto grid grid-cols-5">
           {[
@@ -568,328 +563,6 @@ export default function IsliiMarketPage() {
           })}
         </div>
       </nav>
-    </div>
-  )
-}
-`
-
-const readmeContent = `# Islii Market - GitHub Replace Guide
-## Target: Ambassadorahmed/Islii-market-/app/page.tsx
-## Vercel: islii-market.vercel.app
-
-### V5 PRO FINAL - Orange Theme #F68B1E
-
-This repo contains the complete Next.js page.tsx file ready to paste.
-
-### What's inside page.tsx
-
-- 'use client' at top - required for Next.js App Router
-- Orange theme #F68B1E primary everywhere
-- Hamburger drawer (left slide) with:
-  - Home, My Shop, Approvals (admin), Sellers (admin only), Saved, Messages, Profile
-  - Commission 8% → M-Pesa 0725722020 card
-- Bell notifications (top right):
-  - Triggers when someone joins (buyer/seller)
-  - Triggers when product added → needs approval
-  - Unread count + mark all read
-  - Admin sees pending count footer
-- Approval flow: Preview → Pending → Approved
-  - Sellers submit → status = pending
-  - Admin previews modal → Approve / Reject
-  - Only approved shows on home for buyers
-- My Shop:
-  - Shows only my products
-  - Status badges pending/approved/rejected
-- Sellers list: Only admin sees (userRole === "admin")
-  - Name, phone, email, rating, sales
-- Ad Banners: Supports BOTH image and video
-  - Auto carousel 5s
-  - Video autoplay muted loop
-  - Badge IMAGE / VIDEO
-- Promotions section (% banner)
-- Seller ratings + buyer product ratings (star + count)
-- No Gmail when joining:
-  - Become seller form: Name + Email + Phone fields only
-  - No OAuth, no Google button
-- Commission 8% to M-Pesa 0725722020 shown in:
-  - Drawer card
-  - Sell page
-  - Preview modal calculation
-  - My Shop header
-- Bottom nav: Home | Saved | Sell (FAB orange) | Messages | Profile
-  - Matches V5 PRO spec exactly
-- All Products grid 2 cols mobile, 4 desktop, hover effects
-
-### How to replace in GitHub - Step by Step
-
-#### METHOD 1: GitHub Web (fastest - 2 mins)
-
-1. Go to https://github.com/Ambassadorahmed/Islii-market-
-2. Click folder `app` → click `page.tsx`
-3. Click pencil icon ✏️ Edit this file (top right)
-4. Press Ctrl+A → Delete all old code
-5. Open the downloaded `page.tsx` from this tool → Ctrl+A → Ctrl+C
-6. Paste into GitHub editor Ctrl+V
-7. Scroll down → Commit changes
-   - Message: "V5 PRO final orange - bell, approvals, ratings, banners, commission"
-   - Choose "Commit directly to main"
-   - Click Commit changes
-8. Vercel auto-deploys in ~1 min → check islii-market.vercel.app
-
-#### METHOD 2: VS Code + Git
-
-```bash
-git clone https://github.com/Ambassadorahmed/Islii-market-.git
-cd Islii-market-
-# replace app/page.tsx with downloaded file
-# if your file is in Downloads:
-cp ~/Downloads/page.tsx app/page.tsx
-git add app/page.tsx
-git commit -m "V5 PRO final orange - all features"
-git push origin main
-```
-
-#### METHOD 3: Vercel direct import
-
-If Vercel still shows old version:
-- Vercel Dashboard → islii-market → Deployments → Redeploy
-- Or push empty commit: git commit --allow-empty -m "trigger redeploy" && git push
-
-### Dependencies - Ensure these exist
-
-package.json should have:
-```json
-{
-  "dependencies": {
-    "lucide-react": "^0.400.0",
-    "next": "14.x",
-    "react": "^18"
-  }
-}
-```
-
-Tailwind must be setup (app/globals.css with @tailwind directives)
-
-### Testing after deploy
-
-- Open islii-market.vercel.app on phone
-- Test hamburger → My Shop → Sellers (should only show if admin)
-- Bell icon should show 2 unread → click → notifications list
-- Try Sell → Become Seller → enter email+phone (no Gmail) → Submit product
-- New product goes to pending → bell notification → Approvals tab → Preview modal → Approve
-- Product appears in All Products + Promotions if marked
-- Check image+video banners auto rotate
-- Bottom nav: Home Saved Sell Messages Profile works
-
-### Admin access
-
-Change line in page.tsx:
-```ts
-const [userRole] = useState<UserRole>("admin")
-```
-To "buyer" or "seller" to test other views. In production connect to your auth.
-
-### Commission logic
-
-Displayed as 8% of price → M-Pesa 0725722020
-For real payment integrate Daraja API later, for now it's display only.
-
-### Need help?
-
-If build fails on Vercel:
-- Check build logs → likely missing lucide-react → run npm install lucide-react
-- Ensure no server component importing client hooks
-- This file is already 'use client' so safe.
-
-Done! 🚀 Orange V5 PRO live.
-`
-
-export default function App() {
-  const [copiedPage, setCopiedPage] = useState(false)
-  const [copiedReadme, setCopiedReadme] = useState(false)
-  const [activeFile, setActiveFile] = useState<"page" | "readme">("page")
-  const fileRef = useRef<HTMLPreElement>(null)
-
-  const downloadFile = (content: string, filename: string, mime: string) => {
-    const blob = new Blob([content], { type: mime })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = filename
-    a.click()
-    URL.revokeObjectURL(url)
-  }
-
-  const handleCopy = async (type: "page" | "readme") => {
-    const text = type === "page" ? pageTsxContent : readmeContent
-    await navigator.clipboard.writeText(text)
-    if (type === "page") {
-      setCopiedPage(true)
-      setTimeout(() => setCopiedPage(false), 2000)
-    } else {
-      setCopiedReadme(true)
-      setTimeout(() => setCopiedReadme(false), 2000)
-    }
-  }
-
-  return (
-    <div className="min-h-screen bg-[#FFFBF5] text-zinc-900">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=JetBrains+Mono:wght@400;600&display=swap'); *{font-family:Inter,sans-serif} pre,code{font-family:'JetBrains Mono',monospace}`}</style>
-
-      {/* Top bar */}
-      <div className="sticky top-0 z-20 backdrop-blur-xl bg-white/80 border-b">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-[20px] shadow" style={{ background: ORANGE }}>I</div>
-            <div>
-              <p className="font-extrabold leading-none">ISLII MARKET</p>
-              <p className="text-[11px] font-bold tracking-widest text-zinc-500">GITHUB REPLACE FILES • V5 PRO</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="hidden md:flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full bg-zinc-900 text-white">
-              <Rocket className="w-3.5 h-3.5" /> islii-market.vercel.app
-            </div>
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8 grid lg:grid-cols-[320px_1fr] gap-6">
-
-        {/* Left - Info & Downloads */}
-        <div className="space-y-4">
-          <div className="bg-white rounded-[20px] border shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <FileCode2 className="w-5 h-5" style={{ color: ORANGE }} />
-              <h2 className="font-extrabold">Ready Files</h2>
-              <span className="ml-auto text-[11px] font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">V5 FINAL</span>
-            </div>
-
-            <div className="space-y-2">
-              <button onClick={() => setActiveFile("page")} className={`w-full text-left p-3 rounded-xl border flex items-center gap-3 transition ${activeFile === "page" ? "bg-zinc-900 text-white border-zinc-900" : "bg-zinc-50 hover:bg-zinc-100 border-zinc-200"}`}>
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs ${activeFile === "page" ? "bg-white text-zinc-900" : "bg-white border"}`}>TSX</div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-bold text-sm truncate">app/page.tsx</p>
-                  <p className={`text-xs truncate ${activeFile === "page" ? "text-zinc-400" : "text-zinc-500"}`}>{pageTsxContent.length.toLocaleString()} chars • Replace existing</p>
-                </div>
-                {activeFile === "page" && <div className="w-2 h-2 rounded-full bg-green-400" />}
-              </button>
-
-              <button onClick={() => setActiveFile("readme")} className={`w-full text-left p-3 rounded-xl border flex items-center gap-3 transition ${activeFile === "readme" ? "bg-zinc-900 text-white border-zinc-900" : "bg-zinc-50 hover:bg-zinc-100 border-zinc-200"}`}>
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs ${activeFile === "readme" ? "bg-white text-zinc-900" : "bg-white border"}`}>MD</div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-bold text-sm truncate">README_REPLACE.md</p>
-                  <p className={`text-xs truncate ${activeFile === "readme" ? "text-zinc-400" : "text-zinc-500"}`}>Step-by-step GitHub guide</p>
-                </div>
-                {activeFile === "readme" && <div className="w-2 h-2 rounded-full bg-green-400" />}
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 mt-4">
-              <button onClick={() => handleCopy(activeFile)} className="py-2.5 rounded-xl font-bold text-sm border bg-white hover:bg-zinc-50 flex items-center justify-center gap-1.5">
-                {activeFile === "page" ? (copiedPage ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />) : (copiedReadme ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />)}
-                {activeFile === "page" ? (copiedPage ? "Copied!" : "Copy") : (copiedReadme ? "Copied!" : "Copy")}
-              </button>
-              <button onClick={() => downloadFile(activeFile === "page" ? pageTsxContent : readmeContent, activeFile === "page" ? "page.tsx" : "README_REPLACE.md", "text/plain")} className="py-2.5 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-1.5" style={{ background: ORANGE }}>
-                <Download className="w-4 h-4" /> Download
-              </button>
-            </div>
-
-            <button onClick={() => { downloadFile(pageTsxContent, "page.tsx", "text/plain"); setTimeout(() => downloadFile(readmeContent, "README_REPLACE.md", "text/markdown"), 300) }} className="w-full mt-2 py-3 rounded-xl bg-zinc-900 text-white font-extrabold text-sm flex items-center justify-center gap-2">
-              <Download className="w-4 h-4" /> Download BOTH Files
-            </button>
-          </div>
-
-          <div className="bg-white rounded-[20px] border shadow-sm p-5">
-            <h3 className="font-bold text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4" style={{ color: ORANGE }} /> Features in this page.tsx</h3>
-            <div className="mt-3 space-y-2 text-[13px]">
-              {[
-                ["Orange theme #F68B1E", "Full app uses #F68B1E primary"],
-                ["Hamburger drawer", "Slide left, My Shop + Admin tabs"],
-                ["Bell notifications", "Join + Product added triggers"],
-                ["Approval flow", "Preview / Pending / Approved"],
-                ["My Shop", "Seller dashboard with status badges"],
-                ["Sellers (admin only)", "Admin view seller list"],
-                ["Ad Banners", "Image + Video autoplay carousel"],
-                ["Promotions %", "IsPromotion badge section"],
-                ["Ratings", "Seller rating + buyer product ratings"],
-                ["No Gmail", "Email+Phone only when become seller"],
-                ["Commission 8%", "M-Pesa 0725722020 everywhere"],
-                ["Bottom nav", "Home Saved Sell Messages Profile"],
-              ].map(([title, desc]) => (
-                <div key={title} className="flex gap-2">
-                  <div className="w-5 h-5 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center shrink-0 mt-0.5"><Check className="w-3 h-3" /></div>
-                  <div><p className="font-bold leading-tight">{title}</p><p className="text-xs text-zinc-500">{desc}</p></div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-[20px] p-5 text-white shadow" style={{ background: ORANGE }}>
-            <p className="font-extrabold flex items-center gap-2"><Smartphone className="w-5 h-5" /> Quick Replace</p>
-            <ol className="mt-3 space-y-2 text-[13px] font-medium leading-snug list-decimal pl-4">
-              <li>GitHub → Ambassadorahmed/Islii-market-/app/page.tsx</li>
-              <li>Click ✏️ Edit → Select All → Delete</li>
-              <li>Paste new page.tsx (Copy button above)</li>
-              <li>Commit directly to main</li>
-              <li>Vercel auto-deploys ~60s</li>
-            </ol>
-            <div className="mt-4 bg-black/15 rounded-xl p-2.5 text-[11px] font-mono break-all">islii-market.vercel.app will update automatically</div>
-          </div>
-        </div>
-
-        {/* Right - Code viewer */}
-        <div className="bg-zinc-900 rounded-[20px] border border-zinc-800 shadow-xl overflow-hidden flex flex-col min-h-[640px]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800 bg-zinc-900">
-            <div className="flex items-center gap-3">
-              <div className="flex gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-red-500" /><span className="w-3 h-3 rounded-full bg-amber-400" /><span className="w-3 h-3 rounded-full bg-green-500" />
-              </div>
-              <span className="text-zinc-400 text-xs font-bold">{activeFile === "page" ? "app/page.tsx — 'use client' • V5 PRO" : "README_REPLACE.md"}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold px-2 py-1 rounded-full bg-zinc-800 text-zinc-300 flex items-center gap-1"><Bell className="w-3 h-3" /> Bell</span>
-              <span className="text-[11px] font-bold px-2 py-1 rounded-full bg-zinc-800 text-zinc-300 flex items-center gap-1"><Store className="w-3 h-3" /> My Shop</span>
-              <span className="text-[11px] font-bold px-2 py-1 rounded-full bg-zinc-800 text-zinc-300 flex items-center gap-1"><ShieldCheck className="w-3 h-3" /> Sellers Admin</span>
-            </div>
-          </div>
-
-          <div className="flex-1 overflow-auto bg-[#0e0e10]">
-            <pre ref={fileRef} className="p-4 md:p-5 text-[12px] leading-[1.6] text-zinc-300 whitespace-pre-wrap break-words">
-              <code>{activeFile === "page" ? pageTsxContent : readmeContent}</code>
-            </pre>
-          </div>
-
-          <div className="px-4 py-3 bg-zinc-900 border-t border-zinc-800 flex items-center justify-between gap-3 flex-wrap">
-            <div className="flex items-center gap-2 text-xs text-zinc-500">
-              <span className="flex items-center gap-1"><Star className="w-3 h-3" /> Ratings integrated</span>
-              <span className="w-1 h-1 rounded-full bg-zinc-700" />
-              <span>M-Pesa 0725722020</span>
-              <span className="w-1 h-1 rounded-full bg-zinc-700" />
-              <span>No Gmail required</span>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={() => handleCopy(activeFile)} className="px-3 py-1.5 rounded-full bg-white text-zinc-900 font-bold text-xs flex items-center gap-1">
-                {activeFile === "page" ? (copiedPage ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />) : (copiedReadme ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />)} Copy
-              </button>
-              <button onClick={() => downloadFile(activeFile === "page" ? pageTsxContent : readmeContent, activeFile === "page" ? "page.tsx" : "README_REPLACE.md", "text/plain")} className="px-3 py-1.5 rounded-full font-bold text-xs text-white flex items-center gap-1" style={{ background: ORANGE }}>
-                <Download className="w-3.5 h-3.5" /> {activeFile === "page" ? "page.tsx" : "README"}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer mini preview of bottom nav */}
-      <div className="max-w-6xl mx-auto px-4 md:px-6 pb-8">
-        <div className="bg-white border rounded-[20px] p-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs font-bold text-zinc-600"><div className="w-8 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center"><FileCode2 className="w-4 h-4" /></div> This tool generates <code className="bg-zinc-100 px-1.5 py-0.5 rounded">app/page.tsx</code> with orange theme + all V5 features → paste to GitHub → Vercel deploys</div>
-          <div className="hidden md:flex items-center gap-1 text-[11px] font-bold text-zinc-500">
-            <span>Bottom nav:</span><span className="px-2 py-1 rounded-full bg-zinc-100">Home</span><span className="px-2 py-1 rounded-full bg-zinc-100">Saved</span><span className="px-2 py-1 rounded-full text-white" style={{ background: ORANGE }}>Sell</span><span className="px-2 py-1 rounded-full bg-zinc-100">Messages</span><span className="px-2 py-1 rounded-full bg-zinc-100">Profile</span>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
