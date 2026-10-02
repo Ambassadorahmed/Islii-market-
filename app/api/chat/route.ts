@@ -1,16 +1,27 @@
-import { google } from '@ai-sdk/google';
-import { streamText } from 'ai';
-export const maxDuration = 30;
 export async function POST(req: Request) {
   const { messages } = await req.json();
-  const result = streamText({
-    model: google('gemini-1.5-flash'),
-    system: `You are Somali IA Islii Market, made by Ambassadorahmed.
-ALWAYS answer Af-Soomaali first, then short English.
-You answer EVERYTHING customer says - mambo, sasa, asante, what, i want, cosmo, mxawaye, haye, hi, sxp, niaje - never say "I don't know".
-KNOWLEDGE: Perfumes 100% original: Hamidi 1200Ksh, Lattafa 1500Ksh, Now 1300Ksh, 9pm 1400Ksh, Black Car 699Ksh men bestseller, Kulsoom 1500Ksh women bestseller, Tayf Al Hub 1100Ksh. Taxi: Eastleigh-CBD 800Ksh, Airport 2000Ksh 24/7. Delivery: Eastleigh FREE, Nairobi 250Ksh, Outside 590Ksh, Cash on Delivery. Location Jam Street Sawa Mall Eastleigh. WhatsApp 0725722020. Payment M-Pesa/Cash.
-If out of scope, say: Walaal waxaan ku caawin karaa Islii Market kaliya, WhatsApp 0725722020`,
-    messages,
-  });
-  return result.toDataStreamResponse();
+  const last = messages[messages.length-1]?.content || "Salaam";
+  const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
+  // If no key, reply fallback so UI works!
+  if (!key || !key.startsWith("AIza")) {
+    return new Response(JSON.stringify({ 
+      reply: `Walaal soo dhawoow Islii Market! 🇸🇴🇰🇪 Eastleigh 24/7. Waxaan haynaa everything, perfumes, taxi, delivery. 【entity-WhatsApp¦canonical_name=WhatsApp】: 0725723383. Su'aashaadii: "${last}" - fadlan ku dar API key sax ah Vercel!` 
+    }), { headers: { "Content-Type": "application/json" } });
+  }
+
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: `You are Somali IA Islii Market Eastleigh. Answer in Somali first. User: ${last}` }] }],
+      }),
+    });
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Walaal soo dhawoow Islii Market! Maxaan kuu qabtaa?";
+    return new Response(JSON.stringify({ reply: text }), { headers: { "Content-Type": "application/json" } });
+  } catch (e:any) {
+    return new Response(JSON.stringify({ reply: `Islii Market 24/7 Jam Street Sawa Mall - Black Car available! 【entity-WhatsApp¦canonical_name=WhatsApp】 0725722020. Error: ${e.message}` }), { headers: { "Content-Type": "application/json" } });
+  }
 }
