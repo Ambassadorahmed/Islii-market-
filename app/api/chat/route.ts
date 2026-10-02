@@ -1,45 +1,50 @@
 export async function POST(req: Request) {
   const { messages } = await req.json();
   const last = messages[messages.length-1]?.content || "Salaam";
+  const groqKey = process.env.GROQ_API_KEY;
+
+  if (!groqKey) {
+    return Response.json({ reply: "Walaal GROQ_API_KEY ma jiro Vercel! Fadlan ku dar Settings -> Environment Variables! Key ka qaado console.groq.com/keys" });
+  }
 
   try {
-    // FREE AI - no key needed - answers anything real like Meta AI
-    const res = await fetch("https://text.pollinations.ai/openai", {
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${groqKey}`
+      },
       body: JSON.stringify({
-        model: "openai",
+        model: "llama-3.3-70b-versatile",
         messages: [
           {
             role: "system",
-            content: `You are Ahmed's Somali IA - Islii Market Eastleigh 24/7 🇸🇴🇰🇪 Jam Street Sawa Mall, Nairobi. You sell 100% original perfumes: Black Car, Lattafa, Oud, Musk. Prices 1500-4500 KES. Taxi & delivery 24/7. WhatsApp 0725723383. Owner Ahmed Abdikani Mohamed. You speak Somali FIRST, friendly, funny, like Meta AI. You answer ANY question real, not just shop - you are smart like ChatGPT but Somali. If user says 【entity-Maya¦canonical_name=Maya】, Hhh, Ok, No, Name, Sodawow, Setahy, Xage, Sxp - reply naturally, don't repeat "waan fahmay". Be human, varied, helpful.`
+            content: `You are Somali IA - Islii Market by Ahmed Abdikani 🇸🇴🇰🇪
+Location: Jam Street, Sawa Mall, 1st Floor, Eastleigh, Nairobi.
+You sell: 100% original perfumes, Lattafa, Oud, Musk. Prices from 500-50,000 KES. Taxi & delivery 24/7. WhatsApp: 0725723383. Owner: Ahmed Abdikani Mohamed.
+You are REAL IA like Meta AI - you answer ANY question real: Somali, Swahili, English, jokes, love, life, math, coding, stories, not just shop. You are friendly, funny, smart, human. Speak Somali FIRST. Never say "waan maqlay" or repeat user word. Never be boring. Be like Meta AI.
+If user says Hi, Yawaye, Perfume, Fuck, Ok, Maya, Hhh - answer naturally, smart, varied.`
           },
           { role: "user", content: last }
         ],
-        temperature: 0.8,
-        max_tokens: 500
+        temperature: 0.9,
+        max_tokens: 700
       }),
     });
 
     const data = await res.json();
-    const text = data.choices?.[0]?.message?.content;
-
-    if (text) {
-      return Response.json({ reply: text });
+    
+    if (data.error) {
+      throw new Error(data.error.message);
     }
-    throw new Error("no text");
 
-  } catch (e) {
-    // Fallback smart - not same sentence!
-    const low = last.toLowerCase();
-    if (low.includes("【entity-maya¦canonical_name=Maya】")) return Response.json({ reply: "【entity-Maya¦canonical_name=Maya】 walaal? 😅 Haa waan fahmay - wax kale ma rabtaa? Perfume ama delivery?" });
-    if (low.includes("hhh") || low.includes("lol") || low.includes("haha")) return Response.json({ reply: "Hahaha 😂 Walaal waad qoslisay! Maxaa qosolka keenay? Islii Market ayaa ku jirnaa 24/7!" });
-    if (low.includes("ok")) return Response.json({ reply: "Ok walaal! 👍 Haddii wax u baahan tahay iisoo sheeg - WhatsApp 0725723383" });
-    if (low.includes("name")) return Response.json({ reply: "Magacaygu waa Ahmed IA - Somali IA of Islii Market! 🇸🇴 Adiga magacaa? Waxaan ahay Islii Market bot - Jam Street Sawa Mall!" });
-    if (low.includes("sodawow") || low.includes("sodawoow")) return Response.json({ reply: "Soo dhawoow walaal! 🙏 Islii Market ku soo dhawoow! Jam Street Sawa Mall, Eastleigh - 100% original perfumes!" });
-    if (low.includes("setahy") || low.includes("s tahay") || low.includes("sidee")) return Response.json({ reply: "Alhamdulillah waan fiicanahay walaal! 😊 Adiga sidee tahay? Islii Market 24/7 waan joognaa!" });
-    if (low.includes("xage") || low.includes("where")) return Response.json({ reply: "Jam Street, Sawa Mall, 1st Floor, Eastleigh, Nairobi! 📍 Open 24/7 - WhatsApp 0725723383" });
+    const text = data.choices?.[0]?.message?.content;
+    
+    if (!text) throw new Error("No reply from Groq");
 
-    return Response.json({ reply: `Walaal "${last}" - haa waan maqlay! Islii Market 24/7 ayaan joognaa - su'aal kale ma qabtaa?` });
+    return Response.json({ reply: text });
+
+  } catch (e:any) {
+    return Response.json({ reply: `Walaal error: ${e.message} - Check GROQ_API_KEY Vercel and redeploy!` });
   }
 }
